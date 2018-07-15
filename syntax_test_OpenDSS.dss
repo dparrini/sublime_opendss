@@ -1,0 +1,16 @@
+// SYNTAX TEST "OpenDSS.sublime-syntax"
+// OpenDSSManual.pdf, Command Reference page 69
+//<- punctuation.definition.comment.opendss
+//^^^ comment.line.opendss
+
+/* comment out the next two monitors
+//<- punctuation.definition.comment.begin.opendss
+// ^^^^ comment.block.opendss
+****/ End of block comment
+// ^^ punctuation.definition.comment.end.opendss
+//   ^^^^ comment.block.opendss
+
+
+New line.line4 linecode=336acsr length=2.0 ! this is an in-line comment
+//                                         ^ punctuation.definition.comment.opendss
+//                                          ^^^ comment.line.opendss

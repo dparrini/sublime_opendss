@@ -1,0 +1,58 @@
+%YAML 1.2
+---
+# David R. Parrini
+file_extensions:
+  - dss
+scope: source.opendss
+
+contexts:
+  main:
+    - include: comment
+    - include: string
+
+  eol-pop:
+    # end-of-line context pop
+    - match: $
+      pop: true
+
+  comment:
+    - comment: line comment
+      match: ^(//)
+      captures: 
+        1: punctuation.definition.comment.opendss
+      push:
+        - meta_scope: comment.line.opendss
+        - include: eol-pop
+
+    - comment: inline comment
+      match: \!
+      scope: punctuation.definition.comment.opendss
+      push:
+        - meta_scope: comment.line.opendss
+        - include: eol-pop
+
+    - comment: block comment
+      match: ^(/\*)
+      captures:
+        1: punctuation.definition.comment.begin.opendss
+      push:
+        - meta_scope: comment.block.opendss
+        - match: \*/
+          scope: punctuation.definition.comment.end.opendss
+          set:
+            # the comment continues until the end of line
+            - meta_scope: comment.block.opendss
+            - include: eol-pop
+
+  string:
+    # Strings begin and end with quotes, and use backslashes as an escape
+    # character
+    - match: '"'
+      scope: punctuation.definition.string.begin.opendss
+      push: 
+        - meta_scope: string.quoted.double.opendss
+        - match: '\\.'
+          scope: constant.character.escape.opendss
+        - match: '"'
+          scope: punctuation.definition.string.end.opendss
+          pop: true

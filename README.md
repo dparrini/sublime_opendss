@@ -8,7 +8,7 @@ OpenDSS script file syntax defitions for Sublime Text 3.
 
 ## Documentation
 
-https://dparrini.github.io/sublime_opendss/
+https://github.com/dparrini/sublime_opendss
 
 ## Support
 
@@ -16,4 +16,4 @@ Feel free to report any bugs you find. You are welcome to fork and submit pull r
 
 ## License
 
-The code is available at [GitHub][home] under the [MIT license][license].
+The syntax definition is available at [GitHub](https://github.com/dparrini/sublime_opendss) under the MIT license.

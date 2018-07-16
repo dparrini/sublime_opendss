@@ -7,8 +7,13 @@ scope: source.opendss
 
 contexts:
   main:
+    - include: global
+
+  global:
     - include: comment
     - include: string
+    - include: query
+    - include: more
 
   eol-pop:
     # end-of-line context pop
@@ -56,3 +61,22 @@ contexts:
         - match: '"'
           scope: punctuation.definition.string.end.opendss
           pop: true
+
+  query:
+    - match: ^\?
+      scope: punctuation.query.opendss
+      push:
+        # TODO: change it to query a property
+        - meta_scope: string.unquoted.opendss
+        - include: eol-pop
+        - include: comment
+
+  more:
+    - match: (?i)^(More|M|~)
+      scope: punctuation.more.opendss
+      push:
+        # TODO: change it to execute the "more" action
+        - meta_scope: string.unquoted.opendss
+        - include: eol-pop
+        - include: comment
+

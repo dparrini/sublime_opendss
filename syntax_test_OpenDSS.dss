@@ -14,3 +14,14 @@
 New line.line4 linecode=336acsr length=2.0 ! this is an in-line comment
 //                                         ^ punctuation.definition.comment.opendss
 //                                          ^^^ comment.line.opendss
+
+
+
+? XYCurve.MyPvsT.Y
+//<- punctuation.query.opendss
+// ^^^^ string.unquoted.opendss
+
+
+New line.line4 linecode=336acsr
+More length=2.0
+//^ punctuation.more.opendss

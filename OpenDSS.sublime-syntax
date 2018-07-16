@@ -16,6 +16,9 @@ contexts:
     - include: var
     - include: query
     - include: more
+    - include: standalone-commands
+    - include: commands
+    - include: solution-commands
 
   eol-pop:
     # end-of-line context pop
@@ -101,3 +104,16 @@ contexts:
         - include: eol-pop
         - include: comment
 
+  standalone-commands:
+    - match: (?i)^(Cleanup|Disconnect|About|BuildY|CktLosses|Clear|ClearBusMarkers|Currents|Estimate|FinishTimeStep|Help|Init|Losses|MakeBusList|MakePosSeq|Obfuscate|PhaseLosses|Powers|ReprocessBuses|Sample|SeqCurrents|SeqPowers|SeqVoltages|Summary|Totals|UpdateStorage|Varnames|VarValues|Vdiff|Voltages|Ysc|Zsc|Zsc10|ZscRefresh)\b
+      scope: keyword.command.opendss
+
+  commands:
+    - match: (?i)^(Connect|AddBusMarker|AlignFile|AllocateLoads|BatchEdit|BusCoords|CalcVoltageBases|Capacity|CD|Close|CloseDI|Comparecases|Compile|DI_plot|Disable|Distribute|DOScmd|Dump|Edit|Enable|Export|Fileedit|Formedit|Get|Guids|Interpolate|LatLongCoords|NodeList|NodeDiff|Open|Plot|PstCalc|Reconductor|Redirect|Reduce|RelCalc|Remove|Rephase|Reset|Rotate|Save|Select|Set|SetkVBase|Show|Solve|Variable|Visualize|YearlyCurves)\b
+      scope: keyword.command.opendss
+
+  solution-commands:
+    - match: (?i)^(_)(DoControlActions|InitSnap|SampleControls|ShowControlQueue|SolveDirect|SolveNoControl|SolvePFlow)\b
+      captures:
+        1: punctuation.keyword.opendss
+        2: keyword.command.opendss

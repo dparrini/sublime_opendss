@@ -37,5 +37,8 @@ Var @Input=MyBus1
 var @varname1
 //<- punctuation.var.opendss
 
+Clear
+Connect
+_DoControlActions
 
 

@@ -72,9 +72,11 @@ contexts:
       scope: punctuation.new.opendss
       push:
         # TODO: change it to a "new" context
-        - meta_scope: string.unquoted.opendss
+        # - meta_scope: string.unquoted.opendss
         - include: eol-pop
         - include: comment
+        - include: array
+        
 
   var:
     - match: (?i)^(var)\b
@@ -103,6 +105,78 @@ contexts:
         - meta_scope: string.unquoted.opendss
         - include: eol-pop
         - include: comment
+
+  array:
+    - match: \[
+      scope: punctuation.group.brackets.begin.opendss
+      embed: array-internal
+      escape: \]
+      embed_scope: meta.brackets
+      escape_captures: 
+        0: punctuation.group.brackets.end.opendss
+
+    - match: \(
+      scope: punctuation.group.parens.begin.opendss
+      embed: array-internal
+      escape: \)
+      embed_scope: meta.parens
+      escape_captures: 
+        0: punctuation.group.parens.end.opendss
+
+    - match: \{
+      scope: punctuation.group.braces.begin.opendss
+      embed: array-internal
+      escape: \}
+      embed_scope: meta.braces
+      escape_captures: 
+        0: punctuation.group.braces.end.opendss
+
+    - match: \'
+      scope: punctuation.group.single.begin.opendss
+      embed: array-internal
+      escape: \'
+      embed_scope: meta.single
+      escape_captures: 
+        0: punctuation.group.single.end.opendss
+
+    - match: \"
+      scope: punctuation.group.double.begin.opendss
+      embed: array-internal
+      escape: \"
+      embed_scope: meta.double
+      escape_captures: 
+        0: punctuation.group.double.end.opendss
+
+
+  array-internal:
+    - meta_scope: meta.array.opendss
+    - comment: single-column CSV file
+      match: (?i)\b(file)\b(\=)\b
+      captures:
+        1: variable.language.opendss
+        2: keyword.operator.opendss
+      set:
+        - meta_scope: string.unquoted.opendss
+        - match: ","
+          scope: punctuation.separator.opendss
+          set: array-internal
+
+    - comment: binary file of doubles
+      match: (?i)\b(dblfile)\b(\=)\b
+      captures:
+        1: variable.language.opendss
+        2: keyword.operator.opendss
+      set:
+        - meta_scope: string.unquoted.opendss
+
+    - comment: binary file of doubles
+      match: (?i)\b(sngfile)\b(\=)\b
+      captures:
+        1: variable.language.opendss
+        2: keyword.operator.opendss
+      set:
+        - meta_scope: string.unquoted.opendss
+
 
   standalone-commands:
     - match: (?i)^(Cleanup|Disconnect|About|BuildY|CktLosses|Clear|ClearBusMarkers|Currents|Estimate|FinishTimeStep|Help|Init|Losses|MakeBusList|MakePosSeq|Obfuscate|PhaseLosses|Powers|ReprocessBuses|Sample|SeqCurrents|SeqPowers|SeqVoltages|Summary|Totals|UpdateStorage|Varnames|VarValues|Vdiff|Voltages|Ysc|Zsc|Zsc10|ZscRefresh)\b

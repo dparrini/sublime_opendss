@@ -59,19 +59,6 @@ contexts:
             - meta_scope: comment.block.opendss
             - include: eol-pop
 
-  string:
-    # Strings begin and end with quotes, and use backslashes as an escape
-    # character
-    - match: '"'
-      scope: punctuation.definition.string.begin.opendss
-      push: 
-        - meta_scope: string.quoted.double.opendss
-        - match: '\\.'
-          scope: constant.character.escape.opendss
-        - match: '"'
-          scope: punctuation.definition.string.end.opendss
-          pop: true
-
   new:
     - match: (?i)^New
       scope: punctuation.new.opendss
@@ -110,7 +97,7 @@ contexts:
     - match: ^\?
       scope: punctuation.query.opendss
       push:
-        # TODO: change it to query property context
+        # TODO: change it to a "query" property context
         - meta_scope: string.unquoted.opendss
         - include: eol-pop
         - include: comment
@@ -229,6 +216,55 @@ contexts:
         2: keyword.operator.opendss
       set:
         - meta_scope: string.unquoted.opendss
+
+  string:
+    - match: \[
+      scope: punctuation.definition.string.begin.opendss
+      set: 
+        - meta_scope: string.quoted.brackets.opendss
+      with_prototype:
+        - match: \]
+          scope: punctuation.definition.string.end.opendss
+          pop: true
+
+    - match: \(
+      scope: punctuation.definition.string.begin.opendss
+      set: 
+        - meta_scope: string.quoted.parens.opendss
+      with_prototype:
+        - match: \)
+          scope: punctuation.definition.string.end.opendss
+          pop: true
+
+    - match: \{
+      scope: punctuation.definition.string.begin.opendss
+      set: 
+        - meta_scope: string.quoted.braces.opendss
+      with_prototype:
+        - match: \}
+          scope: punctuation.definition.string.end.opendss
+          pop: true
+
+    - match: \'
+      scope: punctuation.definition.string.begin.opendss
+      set:
+        - meta_scope: string.quoted.single.opendss
+      with_prototype:
+        - match: \'
+          scope: punctuation.definition.string.end.opendss
+          pop: true
+
+    - match: \"
+      scope: punctuation.definition.string.begin.opendss
+      set:
+        - meta_scope: string.quoted.double.opendss
+      with_prototype:
+        - match: \"
+          scope: punctuation.definition.string.end.opendss
+          pop: true
+
+  string-internal:
+        - meta_scope: string.quoted.double.opendss
 
   standalone-commands:
     - match: (?i)^(Cleanup|Disconnect|About|BuildY|CktLosses|Clear|ClearBusMarkers|Currents|Estimate|FinishTimeStep|Help|Init|Losses|MakeBusList|MakePosSeq|Obfuscate|PhaseLosses|Powers|ReprocessBuses|Sample|SeqCurrents|SeqPowers|SeqVoltages|Summary|Totals|UpdateStorage|Varnames|VarValues|Vdiff|Voltages|Ysc|Zsc|Zsc10|ZscRefresh)\b

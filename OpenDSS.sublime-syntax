@@ -12,6 +12,8 @@ contexts:
   global:
     - include: comment
     - include: string
+    - include: new
+    - include: var
     - include: query
     - include: more
 
@@ -62,11 +64,30 @@ contexts:
           scope: punctuation.definition.string.end.opendss
           pop: true
 
+  new:
+    - match: (?i)^New
+      scope: punctuation.new.opendss
+      push:
+        # TODO: change it to a "new" context
+        - meta_scope: string.unquoted.opendss
+        - include: eol-pop
+        - include: comment
+
+  var:
+    - match: (?i)^(var)\b
+      captures:
+        1: punctuation.var.opendss
+      push:
+        # TODO: change it to a "var" context
+        - meta_scope: string.unquoted.opendss
+        - include: eol-pop
+        - include: comment
+
   query:
     - match: ^\?
       scope: punctuation.query.opendss
       push:
-        # TODO: change it to query a property
+        # TODO: change it to query property context
         - meta_scope: string.unquoted.opendss
         - include: eol-pop
         - include: comment
@@ -75,7 +96,7 @@ contexts:
     - match: (?i)^(More|M|~)
       scope: punctuation.more.opendss
       push:
-        # TODO: change it to execute the "more" action
+        # TODO: change it to execute the "more" context
         - meta_scope: string.unquoted.opendss
         - include: eol-pop
         - include: comment

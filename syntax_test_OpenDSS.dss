@@ -25,3 +25,17 @@ New line.line4 linecode=336acsr length=2.0 ! this is an in-line comment
 New line.line4 linecode=336acsr
 More length=2.0
 //^ punctuation.more.opendss
+
+
+New XYCurve.MyEff npts=4 xarray=[.1 .2 .4 1.0] yarray=[.86 .9 .93 .97]
+//<- punctuation.new.opendss
+
+Var @Input=MyBus1
+//<- punctuation.var.opendss
+//  ^^^^string.unquoted.opendss
+
+var @varname1
+//<- punctuation.var.opendss
+
+
+

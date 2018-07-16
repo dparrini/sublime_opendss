@@ -15,8 +15,6 @@ New line.line4 linecode=336acsr length=2.0 ! this is an in-line comment
 //                                         ^ punctuation.definition.comment.opendss
 //                                          ^^^ comment.line.opendss
 
-
-
 ? XYCurve.MyPvsT.Y
 //<- punctuation.query.opendss
 // ^^^^ string.unquoted.opendss
@@ -42,22 +40,31 @@ Connect
 _DoControlActions
 
 
+New abc test=[1]
+New abc test=[1,2,3]
 
+New abc test='1,2,3'
+//           ^punctuation.group.single.begin
+//                 ^punctuation.group.single.end
 
-New test=[1]
-New test=[1,2,3]
+New abc test="1,2,3"
+//           ^punctuation.group.double.begin
+//                 ^punctuation.group.double.end
 
-New test='1,2,3'
-//       ^punctuation.group.single.begin
-//             ^punctuation.group.single.end
+New abc test={1,2,3}
+//           ^punctuation.group.braces.begin
+//                 ^punctuation.group.braces.end
 
-New test="1,2,3"
-//       ^punctuation.group.double.begin
-//             ^punctuation.group.double.end
+New abc test=(1,2,3 | 4, 5, 6 | 7, 8, 9)
+//           ^ punctuation.group.parens.begin
+//                                     ^ punctuation.group.parens.end
 
-New test={1,2,3}
-//       ^punctuation.group.braces.begin
-//             ^punctuation.group.braces.end
+New abc test=[file=abcd.csv, Column=0, Header=Yes]
+New abc test=[dblfile=abcd.dbl]
+New abc test=[sngfile=abcd.sng]
+
+New abc test=[1 2 3]
+
 
 New test=(1,2,3 | 4, 5, 6 | 7, 8, 9)
 //       ^ punctuation.group.parens.begin

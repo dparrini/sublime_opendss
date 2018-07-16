@@ -5,6 +5,11 @@ file_extensions:
   - dss
 scope: source.opendss
 
+variables:
+  identifier: (?:[[:alpha:]][[:alnum:]\-_]*)
+  number: '(?:(?:0(?:x|X)[0-9a-fA-F]*)|(?:(?:[0-9]+\.?[0-9]*)|(?:\.[0-9]+))(?:(?:e|E)(?:\+|-)?[0-9]+)?)(?:L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?(?=\b)'
+
+
 contexts:
   main:
     - include: global
@@ -70,13 +75,26 @@ contexts:
   new:
     - match: (?i)^New
       scope: punctuation.new.opendss
-      push:
-        # TODO: change it to a "new" context
-        # - meta_scope: string.unquoted.opendss
+      set:
         - include: eol-pop
         - include: comment
-        - include: array
         
+        - comment: Quoted name
+          match: ("|')
+          scope: punctuation.definition.string.begin
+          embed: scope:support.class.opendss
+          escape: (\1)
+          escape_captures:
+            1: punctuation.definition.string.end
+
+        - comment: ObjectType.Name
+          match: \b((?:{{identifier}})(?:\.{{identifier}})?)\b
+          scope: support.class.opendss
+          push: edit
+
+        - comment: after getting the object name
+          match: (?<!New)(\s|,)
+          set: edit
 
   var:
     - match: (?i)^(var)\b
@@ -100,11 +118,45 @@ contexts:
   more:
     - match: (?i)^(More|M|~)
       scope: punctuation.more.opendss
-      push:
-        # TODO: change it to execute the "more" context
-        - meta_scope: string.unquoted.opendss
-        - include: eol-pop
-        - include: comment
+      push: edit
+
+  edit:
+    - include: comment
+    - include: eol-pop
+    - match: '\b({{identifier}})\b(\=)'
+      captures:
+        1: variable.language.opendss entity.name.param.opendss
+        2: keyword.operator.opendss
+      push: right-value
+
+    - match: ','
+      scope: punctuation.separator.opendss
+
+  right-value:
+    - include: array
+
+    - comment: pop after an array
+      match: (?<=[\]\)}'"])
+      pop: true
+
+    - match: '{{number}}'
+      scope: constant.numeric.opendss
+      pop: true
+
+    - match: '(@)({{identifier}})'
+      captures:
+        1: punctuatuation.definition.variable.opendss
+        2: variable.opendss
+      pop: true
+
+    - match: '([[:alnum:]]*)(?=\b)'
+      scope: constant.language.opendss
+      pop: true
+
+    - match: $
+      scope: invalid.illegal
+      set: edit
+
 
   array:
     - match: \[
@@ -176,7 +228,6 @@ contexts:
         2: keyword.operator.opendss
       set:
         - meta_scope: string.unquoted.opendss
-
 
   standalone-commands:
     - match: (?i)^(Cleanup|Disconnect|About|BuildY|CktLosses|Clear|ClearBusMarkers|Currents|Estimate|FinishTimeStep|Help|Init|Losses|MakeBusList|MakePosSeq|Obfuscate|PhaseLosses|Powers|ReprocessBuses|Sample|SeqCurrents|SeqPowers|SeqVoltages|Summary|Totals|UpdateStorage|Varnames|VarValues|Vdiff|Voltages|Ysc|Zsc|Zsc10|ZscRefresh)\b

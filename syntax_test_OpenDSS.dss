@@ -33,6 +33,10 @@ var @varname1
 var
 //<- keyword.var.opendss
 
+New Reactor.@Jumper^1 Phases=1 Bus1=@Input.4 Bus2=@Input.23 R=0 X=0.01
+//                                  ^ punctuation.definition.variable.opendss
+//                                        ^ punctuation.definition.variable.opendss
+
 
 Clear
 //<- keyword.command.opendss

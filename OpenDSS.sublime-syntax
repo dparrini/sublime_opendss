@@ -8,7 +8,7 @@ scope: source.opendss
 variables:
   identifier: (?:[^=\s]+)
   number: '(?:(?:0(?:x|X)[0-9a-fA-F]*)|(?:(?:[0-9]+\.?[0-9]*)|(?:\.[0-9]+))(?:(?:e|E)(?:\+|-)?[0-9]+)?)(?:L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?(?=\b)'
-
+  variable: (@)([^=\s^.]+)(?:(?:(?:(\.)(?:[0-9]+))*)|(?:(\^)[[:alnum:]]+))
 
 contexts:
   main:
@@ -161,14 +161,16 @@ contexts:
       match: (?<=[\]\)}'"])
       pop: true
 
-    - match: '{{number}}'
-      scope: constant.numeric.opendss
+    - match: '{{variable}}'
+      captures:
+        0: variable.opendss
+        1: punctuation.definition.variable.opendss
+        3: punctuation.definition.variable.opendss
+        4: punctuation.definition.variable.opendss
       pop: true
 
-    - match: '(@)({{identifier}})'
-      captures:
-        1: punctuatuation.definition.variable.opendss
-        2: variable.opendss
+    - match: '{{number}}'
+      scope: constant.numeric.opendss
       pop: true
 
     - match: '([[:alnum:]]*)(?=\b)'

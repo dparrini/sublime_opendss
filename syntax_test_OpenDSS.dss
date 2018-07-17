@@ -1,4 +1,6 @@
 // SYNTAX TEST "OpenDSS.sublime-syntax"
+
+
 // OpenDSSManual.pdf, Command Reference page 69
 //<- punctuation.definition.comment.opendss
 //^^^ comment.line.opendss
@@ -9,6 +11,36 @@
 ****/ End of block comment
 // ^^ punctuation.definition.comment.end.opendss
 //   ^^^^ comment.block.opendss
+
+
+Var @Input=MyBus1
+//<- keyword.var.opendss
+//  ^ punctuation.definition.variable.opendss
+//   ^^ variable.opendss
+//        ^ keyword.operator.opendss
+//^^^^^^^^^^^^^^^ meta.var.opendss
+
+Var @Input=MyBus1  @Output=test
+//^ keyword.var.opendss
+//                 ^ punctuation.definition.variable.opendss
+//                  ^^ variable.opendss
+
+var @varname1
+//<- keyword.var.opendss
+//  ^ punctuation.definition.variable.opendss
+//   ^^ entity.name.variable.opendss
+
+var
+//<- keyword.var.opendss
+
+
+Clear
+//<- keyword.command.opendss
+Connect
+//<- keyword.command.opendss
+_DoControlActions
+//<- punctuation.keyword.opendss
+// ^ keyword.command.opendss
 
 
 New line.line4 linecode=336acsr length=2.0 ! this is an in-line comment
@@ -28,20 +60,14 @@ More length=2.0
 New XYCurve.MyEff npts=4 xarray=[.1 .2 .4 1.0] yarray=[.86 .9 .93 .97]
 //<- punctuation.new.opendss
 
-Var @Input=MyBus1
-//<- punctuation.var.opendss
-//  ^^^^string.unquoted.opendss
-
-var @varname1
-//<- punctuation.var.opendss
-
-Clear
-Connect
-_DoControlActions
-
 
 New abc test=[1]
+//           ^punctuation.group.brackets.begin
+//             ^punctuation.group.brackets.end
+
 New abc test=[1,2,3]
+//           ^punctuation.group.brackets.begin
+//                 ^punctuation.group.brackets.end
 
 New abc test='1,2,3'
 //           ^punctuation.group.single.begin
@@ -58,6 +84,7 @@ New abc test={1,2,3}
 New abc test=(1,2,3 | 4, 5, 6 | 7, 8, 9)
 //           ^ punctuation.group.parens.begin
 //                                     ^ punctuation.group.parens.end
+
 
 New abc test=[file=abcd.csv, Column=0, Header=Yes]
 New abc test=[dblfile=abcd.dbl]

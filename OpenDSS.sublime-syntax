@@ -86,12 +86,46 @@ contexts:
   var:
     - match: (?i)^(var)\b
       captures:
-        1: punctuation.var.opendss
+        0: meta.var.opendss
+        1: keyword.var.opendss
       push:
-        # TODO: change it to a "var" context
-        - meta_scope: string.unquoted.opendss
-        - include: eol-pop
+        - meta_scope: meta.var.opendss
         - include: comment
+        - include: eol-pop
+
+        - comment: variable value output mode
+          match: \@(?={{identifier}}(?!.*=))
+          scope: punctuation.definition.variable.opendss entity.name.variable.opendss
+          set:
+            - meta_scope: meta.var.opendss
+            - include: comment
+            - include: eol-pop
+            - match: "{{identifier}}"
+              scope: meta.var.opendss entity.name.variable.opendss
+              set:
+                - include: comment
+                - include: eol-pop
+                - match: \S
+                  scope: invalid.illegal.opendss
+
+        - comment: setting variables mode
+          match: (?=\@{{identifier}}\s*=)
+          push:
+            - meta_scope: meta.var.opendss
+            - include: comment
+            - include: eol-pop
+            - match: \@
+              scope: punctuation.definition.variable.opendss entity.name.variable.opendss
+              set:
+                - meta_scope: meta.var.opendss
+                - match: "{{identifier}}"
+                  scope: entity.name.variable.opendss variable.opendss
+                  set:
+                    - match: \=
+                      scope: keyword.operator.opendss meta.var.opendss
+                      set: right-value
+                    - include: comment
+                    - include: eol-pop
 
   query:
     - match: ^\?

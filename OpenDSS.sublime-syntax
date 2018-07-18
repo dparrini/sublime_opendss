@@ -13,9 +13,9 @@ variables:
   # separator (whitespace, comma, comma + whitespace)
   sep: "(?:\\s*(,)\\s*|\\s+)"
   # array begin
-  array_begin: "[\\[\\({'\"]"
+  array_begin: "[\\[({'\"]"
   # array end
-  array_end: "[\\]\\)}'\"]"
+  array_end: "[\\])}'\"]"
   # RPN functions
   rpnfun: (?i)(?:sqrt|sqr|inv|ln|exp|log10|asin|acos|atan2|atan|sin|cos|tan|Rollup|Rolldn|Swap)
   # RPN operators
@@ -175,6 +175,7 @@ contexts:
   right-value:
     - include: rpn
     - include: array
+    - include: reserved-variables
 
     - comment: pop after an array # array-end
       match: (?<=[\]\)}'"])
@@ -199,7 +200,6 @@ contexts:
     - match: $
       scope: invalid.illegal
       set: edit
-
 
   array:
     - match: \[
@@ -246,6 +246,21 @@ contexts:
     - meta_scope: meta.array.opendss
     - include: rpn
     - include: array
+    - include: reserved-variables
+    
+    - match: (?:\|)
+      scope: punctuation.separator.opendss
+
+    - match: (?:,)
+      scope: punctuation.separator.opendss
+
+    - match: "{{number}}"
+      scope: constant.numeric.opendss
+
+    - match: "(@)?({{identifier}})(?:\\.{{identifier}})*(?:(?={{sep}})|(?={{array_end}}))"
+      captures:
+        0: entity.name.variable.opendss
+        1: punctuation.definition.variable.opendss
 
     - comment: single-column CSV file
       match: (?i)\b(file)\b(\=)\b
@@ -410,3 +425,15 @@ contexts:
       captures:
         1: punctuation.keyword.opendss
         2: keyword.command.opendss
+
+  reserved-variables:
+    - match: (?i)\%result\%
+      scope: variable.language.opendss
+
+    - match: (?i)(?:true|false|yes|no)
+      scope: variable.language.opendss
+
+    - match: (?i)(?:wye|delta)
+      scope: variable.language.opendss
+
+    - match: (?i)(?:pi)

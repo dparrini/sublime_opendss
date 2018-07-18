@@ -94,8 +94,12 @@ New test.abc kvs="24.9 sqrt"
 //                 ^ constant.numeric.opendss
 
 New test.abc kvs=("24.9 -")
+//                    ^ meta.rpn.opendss
+//                 ^ constant.numeric.opendss
 
 New test.abc kvs=("24.9 sqrt 10 +")
+//                    ^ meta.rpn.opendss
+//                 ^ constant.numeric.opendss
 
 New Transformer.t kvs=("24.9 3 sqrt /" "10 2 *") test=(14.4 13.8 / sqr 300 *)
 //                             ^ meta.rpn.opendss

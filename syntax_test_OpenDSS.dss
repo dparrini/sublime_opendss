@@ -102,6 +102,18 @@ New Transformer.t kvs=("24.9 3 sqrt /" "10 2 *") test=(14.4 13.8 / sqr 300 *)
 //                                  ^ keyword.operator.opendss
 //                                                          ^ meta.rpn.opendss
 
+Spectrum.DefaultLoad.NumHarm=1   ! This effectively gets rid of LOAD harmonics
+// ^ meta.setvalue.opendss
+//                          ^ keyword.operator.opendss
+
+Capacitor.C1.kvar = [(14.4 13.8 / sqr 300 *), (14.4 13.8 / sqr 300 *)]
+// ^ meta.setvalue.opendss
+//                ^ keyword.operator.opendss
+//                      ^ meta.rpn.opendss
+
+line.L1.X1 = (2 pi * 60 * .001 *)
+//             ^ meta.setvalue.opendss
+//         ^ keyword.operator.opendss
 
 New abc test=[file=abcd.csv, Column=0, Header=Yes]
 New abc test=[dblfile=abcd.dbl]

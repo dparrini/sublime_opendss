@@ -97,7 +97,7 @@ contexts:
           push: edit
 
         - comment: after getting the object name
-          match: (?<!New)(\s|,)
+          match: (?i)(?<!New)(\s|,)
           set: edit
 
   var:

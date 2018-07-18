@@ -8,8 +8,24 @@ scope: source.opendss
 variables:
   identifier: (?:[^=\s]+)
   number: '(?:(?:0(?:x|X)[0-9a-fA-F]*)|(?:(?:[0-9]+\.?[0-9]*)|(?:\.[0-9]+))(?:(?:e|E)(?:\+|-)?[0-9]+)?)(?:L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?(?=\b)'
+  # OpenDSS variable 
   variable: (@)([^=\s^.]+)(?:(?:(?:(\.)(?:[0-9]+))*)|(?:(\^)[[:alnum:]]+))
-  rpnfun: (?i)(?:sqrt|sqr|inv|ln|exp|log10|sin|cos|tan|asin|acos|atan|atan2|Rollup|Rolldn|Swap)
+  # separator (whitespace, comma, comma + whitespace)
+  sep: "(?:\\s*(,)\\s*|\\s+)"
+  # array begin
+  array_begin: "[\\[\\({'\"]"
+  # array end
+  array_end: "[\\]\\)}'\"]"
+  # RPN functions
+  rpnfun: (?i)(?:sqrt|sqr|inv|ln|exp|log10|asin|acos|atan2|atan|sin|cos|tan|Rollup|Rolldn|Swap)
+  # RPN operators
+  rpnop: "(?:[/\\-+*^])"
+  # unary RPN operators/functions
+  rpn_op_un: "(?i)(?:\\-|\\+|sqrt|sqr|inv|ln|exp|log10|asin|acos|atan|sin|cos|tan)"
+  # binary (or more args) RPN operators/functions
+  rpn_op_bi: "(?i)(?:\\*|\\^|\\-|\\+|/|atan2|Swap|Rolldn|Swap)"
+  # expect RPN pattern
+  expect_rpn: "(?i)(?=({{number}}{{sep}})+(?:{{rpn_op_un}}|{{number}}{{sep}}{{rpn_op_bi}}))"
 
 contexts:
   main:
@@ -156,9 +172,10 @@ contexts:
       scope: punctuation.separator.opendss
 
   right-value:
+    - include: rpn
     - include: array
 
-    - comment: pop after an array
+    - comment: pop after an array # array-end
       match: (?<=[\]\)}'"])
       pop: true
 
@@ -226,15 +243,8 @@ contexts:
 
   array-internal:
     - meta_scope: meta.array.opendss
+    - include: rpn
     - include: array
-
-    - comment: RPN operators
-      match: (?:[/\-+*^])
-      scope: keyword.operator.opendss meta.rpn.opendss
-
-    - comment: RPN functions
-      match: \b{{rpnfun}}\b
-      scope: variable.function.opendss meta.rpn.opendss
 
     - comment: single-column CSV file
       match: (?i)\b(file)\b(\=)\b
@@ -262,6 +272,69 @@ contexts:
         2: keyword.operator.opendss
       set:
         - meta_scope: string.unquoted.opendss
+
+  rpn:
+    - match: "\\[{{expect_rpn}}"
+      scope: punctuation.definition.rpn.begin.opendss
+      embed: rpn-internal
+      escape: \]
+      embed_scope: meta.double meta.rpn.opendss
+      escape_captures: 
+        0: punctuation.group.double.end.opendss
+
+    - match: "\\[{{expect_rpn}}"
+      scope: punctuation.group.brackets.begin.opendss
+      embed: rpn-internal
+      escape: \]
+      embed_scope: meta.brackets meta.rpn.opendss
+      escape_captures: 
+        0: punctuation.group.brackets.end.opendss
+
+    - match: "\\({{expect_rpn}}"
+      scope: punctuation.group.parens.begin.opendss
+      embed: rpn-internal
+      escape: \)
+      embed_scope: meta.parens meta.rpn.opendss
+      escape_captures: 
+        0: punctuation.group.parens.end.opendss
+
+    - match: "{{{expect_rpn}}"
+      scope: punctuation.group.braces.begin.opendss
+      embed: rpn-internal
+      escape: \}
+      embed_scope: meta.braces meta.rpn.opendss
+      escape_captures: 
+        0: punctuation.group.braces.end.opendss
+
+    - match: "'{{expect_rpn}}"
+      scope: punctuation.group.single.begin.opendss
+      embed: rpn-internal
+      escape: \'
+      embed_scope: meta.single meta.rpn.opendss
+      escape_captures: 
+        0: punctuation.group.single.end.opendss
+
+    - match: "\"{{expect_rpn}}"
+      scope: punctuation.group.double.begin.opendss
+      embed: rpn-internal
+      escape: \"
+      embed_scope: meta.double meta.rpn.opendss
+      escape_captures: 
+        0: punctuation.group.double.end.opendss
+
+  rpn-internal:
+    - include: comment
+
+    - comment: RPN operators
+      match: "{{rpnop}}"
+      scope: keyword.operator.opendss meta.rpn.opendss
+
+    - comment: RPN functions
+      match: \b{{rpnfun}}\b
+      scope: variable.function.opendss meta.rpn.opendss
+
+    - match: \b{{number}}\b
+      scope: constant.numeric.opendss
 
   string:
     - match: \[

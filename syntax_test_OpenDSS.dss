@@ -89,6 +89,10 @@ New abc test=(1,2,3 | 4, 5, 6 | 7, 8, 9)
 //           ^ punctuation.group.parens.begin
 //                                     ^ punctuation.group.parens.end
 
+New Transformer.t kvs=("24.9 3 sqrt /" "10 2 *") test=(14.4 13.8 / sqr 300 *)
+//                             ^ meta.rpn.opendss
+//                                  ^ keyword.operator.opendss
+
 
 New abc test=[file=abcd.csv, Column=0, Header=Yes]
 New abc test=[dblfile=abcd.dbl]

@@ -6,8 +6,8 @@ file_extensions:
 scope: source.opendss
 
 variables:
-  identifier: (?:[^=\s]+)
-  number: '(?:(?:0(?:x|X)[0-9a-fA-F]*)|(?:(?:[0-9]+\.?[0-9]*)|(?:\.[0-9]+))(?:(?:e|E)(?:\+|-)?[0-9]+)?)(?:L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?(?=\b)'
+  identifier: (?:[^=\s\(\)\[\]\{\}'"]+)
+  number: '(?:(?:\+|-)?)(?:(?:0(?:x|X)[0-9a-fA-F]*)|(?:(?:[0-9]+\.?[0-9]*)|(?:\.[0-9]+))(?:(?:e|E)(?:\+|-)?[0-9]+)?)(?:L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?(?=\b)'
   # OpenDSS variable 
   variable: (@)([^=\s^.]+)(?:(?:(?:(\.)(?:[0-9]+))*)|(?:(\^)[[:alnum:]]+))
   # separator (whitespace, comma, comma + whitespace)

@@ -155,7 +155,7 @@ contexts:
         - include: comment
 
   more:
-    - match: (?i)^(More|M|~)
+    - match: (?i)^(More|M|~)(?=\s)
       scope: punctuation.more.opendss
       push: edit
 

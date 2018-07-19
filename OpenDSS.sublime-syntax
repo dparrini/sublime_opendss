@@ -16,6 +16,8 @@ variables:
   array_begin: "[\\[({'\"]"
   # array end
   array_end: "[\\])}'\"]"
+  # match any array with its contents
+  array_match: (?:\[.*\]|\(.*\)|\{.*\}|".*"|'.*')
   # RPN functions
   rpnfun: (?i)(?:sqrt|sqr|inv|ln|exp|log10|asin|acos|atan2|atan|sin|cos|tan|Rollup|Rolldn|Swap)
   # RPN operators
@@ -162,13 +164,19 @@ contexts:
       push: edit
 
   edit:
+    - meta_scope: meta.edit.opendss
     - include: comment
     - include: eol-pop
 
-    - match: '({{identifier}})\s*(\=)'
+    - comment: keyworded parameters
+      match: '({{identifier}})\s*(\=)'
       captures:
         1: variable.function.opendss entity.name.param.opendss
         2: keyword.operator.opendss
+      push: right-value
+
+    - comment: positional parameters
+      match: (?<=\s)(?=(?:{{number}}|{{variable}}|{{array_match}}|{{identifier}})(?:\s|$))
       push: right-value
 
     - match: ','
@@ -195,8 +203,8 @@ contexts:
       scope: constant.numeric.opendss
       pop: true
 
-    - match: '([[:alnum:]]*)(?=\b)'
-      scope: constant.language.opendss
+    - match: "{{identifier}}"
+      scope: entity.name.object.opendss
       pop: true
 
     - match: $

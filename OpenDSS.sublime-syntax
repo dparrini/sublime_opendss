@@ -24,8 +24,10 @@ variables:
   rpn_op_un: "(?i)(?:\\-|\\+|sqrt|sqr|inv|ln|exp|log10|asin|acos|atan|sin|cos|tan)"
   # binary (or more args) RPN operators/functions
   rpn_op_bi: "(?i)(?:\\*|\\^|\\-|\\+|/|atan2|Swap|Rolldn|Swap)"
+  # RPN valid values: numbers and pi constant
+  rpn_val: (?:{{number}}|pi)
   # expect RPN pattern
-  expect_rpn: "(?i)(?=({{number}}{{sep}})+(?:{{rpn_op_un}}|{{number}}{{sep}}{{rpn_op_bi}}))"
+  expect_rpn: "(?i)(?=({{rpn_val}}{{sep}})+(?:{{rpn_op_un}}|{{rpn_val}}{{sep}}{{rpn_op_bi}}))"
 
 contexts:
   main:
@@ -348,6 +350,10 @@ contexts:
     - comment: RPN functions
       match: \b{{rpnfun}}\b
       scope: variable.function.opendss meta.rpn.opendss
+
+    - comment: RPN constants
+      match: (?i)\b(pi)\b
+      scope: constant.language.opendss meta.rpn.opendss
 
     - match: \b{{number}}\b
       scope: constant.numeric.opendss

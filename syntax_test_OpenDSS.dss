@@ -118,6 +118,10 @@ Capacitor.C1.kvar = [(14.4 13.8 / sqr 300 *), (14.4 13.8 / sqr 300 *)]
 line.L1.X1 = (2 pi * 60 * .001 *)
 //             ^ meta.setvalue.opendss
 //         ^ keyword.operator.opendss
+//              ^ constant.language.opendss
+
+
+
 
 New abc test=[file=abcd.csv, Column=0, Header=Yes]
 New abc test=[dblfile=abcd.dbl]

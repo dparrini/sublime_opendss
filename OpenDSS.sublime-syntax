@@ -423,7 +423,7 @@ contexts:
       scope: keyword.command.opendss
 
   commands:
-    - match: (?i)^(Connect|AddBusMarker|AlignFile|AllocateLoads|BatchEdit|BusCoords|CalcVoltageBases|Capacity|CD|Close|CloseDI|Comparecases|Compile|DI_plot|Disable|Distribute|DOScmd|Dump|Edit|Enable|Export|Fileedit|Formedit|Get|Guids|Interpolate|LatLongCoords|NodeList|NodeDiff|Open|Plot|PstCalc|Reconductor|Redirect|Reduce|RelCalc|Remove|Rephase|Reset|Rotate|Save|Select|Set|SetkVBase|Show|Solve|Variable|Visualize|YearlyCurves)\b
+    - match: (?i)^(Connect|AddBusMarker|AlignFile|AllocateLoads|BatchEdit|BusCoords|CalcVoltageBases|CalcV|Capacity|CD|Close|CloseDI|Comparecases|Compile|DI_plot|Disable|Distribute|DOScmd|Dump|Edit|Enable|Export|Fileedit|Formedit|Get|Guids|Interpolate|LatLongCoords|NodeList|NodeDiff|Open|Plot|PstCalc|Reconductor|Redirect|Reduce|RelCalc|Remove|Rephase|Reset|Rotate|Save|Select|Set|SetkVBase|Show|Solve|Variable|Visualize|YearlyCurves)\b
       scope: keyword.command.opendss
 
   solution-commands:
@@ -436,10 +436,14 @@ contexts:
     - match: (?i)\%result\%
       scope: variable.language.opendss
 
-    - match: (?i)(?:true|false|yes|no)
+    - match: (?i)\b(?:NONE)\b
+
+    - match: (?i)\b(?:true|false|yes|no)\b
       scope: variable.language.opendss
 
-    - match: (?i)(?:wye|delta)
+    - match: (?i)\b(?:fixed|variable)\b
       scope: variable.language.opendss
 
-    - match: (?i)(?:pi)
+    - comment: transformer connection (Conn)
+      match: (?i)\b(?:wye|y|LN|delta|LL)\b
+      scope: variable.language.opendss

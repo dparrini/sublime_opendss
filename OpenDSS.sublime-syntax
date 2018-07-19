@@ -278,10 +278,13 @@ contexts:
         1: variable.language.opendss
         2: keyword.operator.opendss
       set:
+        - include: eol-pop
+        - include: comment
         - meta_scope: string.unquoted.opendss
         - match: ","
           scope: punctuation.separator.opendss
-          set: array-internal
+          embed: edit
+          escape: "(?={{array_end}})"
 
     - comment: binary file of doubles
       match: (?i)\b(dblfile)\b(\=)\b
@@ -289,7 +292,13 @@ contexts:
         1: variable.language.opendss
         2: keyword.operator.opendss
       set:
+        - include: eol-pop
+        - include: comment
         - meta_scope: string.unquoted.opendss
+        - match: ","
+          scope: punctuation.separator.opendss
+          embed: edit
+          escape: "(?={{array_end}})"
 
     - comment: binary file of doubles
       match: (?i)\b(sngfile)\b(\=)\b
@@ -297,7 +306,13 @@ contexts:
         1: variable.language.opendss
         2: keyword.operator.opendss
       set:
+        - include: eol-pop
+        - include: comment
         - meta_scope: string.unquoted.opendss
+        - match: ","
+          scope: punctuation.separator.opendss
+          embed: edit
+          escape: "(?={{array_end}})"
 
   rpn:
     - match: "\\[{{expect_rpn}}"

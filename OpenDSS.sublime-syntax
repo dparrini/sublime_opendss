@@ -185,7 +185,6 @@ contexts:
   right-value:
     - include: rpn
     - include: array
-    - include: reserved-variables
 
     - comment: pop after an array # array-end
       match: (?<=[\]\)}'"])

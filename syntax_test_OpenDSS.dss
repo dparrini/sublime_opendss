@@ -60,6 +60,11 @@ _DoControlActions
 //<- punctuation.keyword.opendss
 // ^ keyword.command.opendss
 
+Redirect IEEELinecodes.DSS
+// ^ keyword.command.opendss
+//         ^ string.unquoted.opendss
+//         ^ entity.name.file.opendss
+//      ^ meta.filecommand.opendss
 
 About abcd ! test
 // ^ keyword.command.opendss

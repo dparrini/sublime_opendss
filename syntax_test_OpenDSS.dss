@@ -1,5 +1,8 @@
 // SYNTAX TEST "OpenDSS.sublime-syntax"
 
+/*
+   Comments
+*/
 
 // OpenDSSManual.pdf, Command Reference page 69
 //<- punctuation.definition.comment.opendss
@@ -12,6 +15,14 @@
 // ^^ punctuation.definition.comment.end.opendss
 //   ^^^^ comment.block.opendss
 
+
+New line.line4 linecode=336acsr length=2.0 ! this is an in-line comment
+//                                         ^ punctuation.definition.comment.opendss
+//                                          ^^^ comment.line.opendss
+
+/*
+   Variables
+*/
 
 Var @Input=MyBus1
 //<- keyword.var.opendss
@@ -37,6 +48,9 @@ New Reactor.@Jumper^1 Phases=1 Bus1=@Input.4 Bus2=@Input.23 R=0 X=0.01
 //                                  ^ punctuation.definition.variable.opendss
 //                                        ^ punctuation.definition.variable.opendss
 
+/*
+   Commands
+*/
 
 Clear
 //<- keyword.command.opendss
@@ -47,14 +61,18 @@ _DoControlActions
 // ^ keyword.command.opendss
 
 
-New line.line4 linecode=336acsr length=2.0 ! this is an in-line comment
-//                                         ^ punctuation.definition.comment.opendss
-//                                          ^^^ comment.line.opendss
+About abcd ! test
+// ^ keyword.command.opendss
+//     ^ invalid.illegal.opendss
+//           ^ comment.line.opendss
+
+/*
+   New, more, query
+*/
 
 ? XYCurve.MyPvsT.Y
 //<- punctuation.query.opendss
 // ^^^^ string.unquoted.opendss
-
 
 New line.line4 linecode=336acsr
 More length=2.0
@@ -63,6 +81,9 @@ More length=2.0
 New XYCurve.MyEff npts=4 xarray=[.1 .2 .4 1.0] yarray=[.86 .9 .93 .97]
 //<- punctuation.new.opendss
 
+/*
+   Basic arrays
+*/
 
 New abc test=[1]
 //           ^punctuation.group.brackets.begin
@@ -88,6 +109,10 @@ New abc test=(1,2,3 | 4, 5, 6 | 7, 8, 9)
 //           ^ punctuation.group.parens.begin
 //                                     ^ punctuation.group.parens.end
 
+/*
+   Positional parameters
+*/
+
 new object=circuit.DSSLLibtestckt
 ~ basekv=115 1.00 0.0 60.0 3 20000 21000 4.0 3.0 !edit the voltage source
 //<- punctuation.more.opendss
@@ -95,9 +120,9 @@ new object=circuit.DSSLLibtestckt
 //            ^ meta.edit.opendss
 //                                                  ^ comment.line.opendss
 
-new transformer.TR1 phases=3 windings=2
-~ buses=(F1-2 Genbus1)
-
+/*
+   RPN
+*/
 
 New test.abc kvs="24.9 sqrt"
 //                    ^ meta.rpn.opendss
@@ -116,6 +141,17 @@ New Transformer.t kvs=("24.9 3 sqrt /" "10 2 *") test=(14.4 13.8 / sqr 300 *)
 //                                  ^ keyword.operator.opendss
 //                                                          ^ meta.rpn.opendss
 
+New Transformer.@TR^A Xfmrcode=333KVA Buses=[@Input.1.4 @Output.1.0 @Input.7.0 ]
+
+
+New Transformer.XFM1  Phases=3   Windings=2 Xhl=2.72
+~ wdg=1 bus=61s       conn=Delta kv=4.16    kva=150    %r=0.635
+
+
+/*
+   Setting properties
+*/
+
 Spectrum.DefaultLoad.NumHarm=1   ! This effectively gets rid of LOAD harmonics
 // ^ meta.setvalue.opendss
 //                          ^ keyword.operator.opendss
@@ -130,8 +166,11 @@ line.L1.X1 = (2 pi * 60 * .001 *)
 //         ^ keyword.operator.opendss
 //              ^ constant.language.opendss
 
+XYCurve.MyPvsT.Yscale=0.5 X=75
 
-
+/*
+   Special array cases
+*/
 
 New abc test=[file=abcd.csv, Column=0, Header=Yes]
 New abc test=[dblfile=abcd.dbl]

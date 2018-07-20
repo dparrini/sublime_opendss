@@ -443,6 +443,13 @@ contexts:
   standalone-commands:
     - match: (?i)^(Cleanup|Disconnect|About|BuildY|CktLosses|Clear|ClearBusMarkers|Currents|Estimate|FinishTimeStep|Help|Init|Losses|MakeBusList|MakePosSeq|Obfuscate|PhaseLosses|Powers|ReprocessBuses|Sample|SeqCurrents|SeqPowers|SeqVoltages|Summary|Totals|UpdateStorage|Varnames|VarValues|Vdiff|Voltages|Ysc|Zsc|Zsc10|ZscRefresh)\b
       scope: keyword.command.opendss
+      push:
+        - meta_scope: meta.command.opendss
+        - include: eol-pop
+        - include: comment
+        - match: "[^\\s$]+"
+          scope: invalid.illegal.opendss
+          pop: true
 
   commands:
     - match: (?i)^(Connect|AddBusMarker|AlignFile|AllocateLoads|BatchEdit|BusCoords|CalcVoltageBases|CalcV|Capacity|CD|Close|CloseDI|Comparecases|Compile|DI_plot|Disable|Distribute|DOScmd|Dump|Edit|Enable|Export|Fileedit|Formedit|Get|Guids|Interpolate|LatLongCoords|NodeList|NodeDiff|Open|Plot|PstCalc|Reconductor|Redirect|Reduce|RelCalc|Remove|Rephase|Reset|Rotate|Save|Select|Set|SetkVBase|Show|Solve|Variable|Visualize|YearlyCurves)\b

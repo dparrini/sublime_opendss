@@ -1,0 +1,11 @@
+{
+  "selector": "source.opendss",
+  "variants":
+  [
+    {
+      "name": "Command line",
+      "cmd": ["opendsscmd", "$file"],
+      "working_dir": "$file_path"
+    }
+  ]
+}

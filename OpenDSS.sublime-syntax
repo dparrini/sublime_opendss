@@ -6,7 +6,7 @@ file_extensions:
 scope: source.opendss
 
 variables:
-  identifier: (?:[^=\s\(\)\[\]\{\}'"]+)
+  identifier: (?:[^=\.\^\s\(\)\[\]\{\}'"]+)
   number: '(?:(?:\+|-)?)(?:(?:0(?:x|X)[0-9a-fA-F]*)|(?:(?:[0-9]+\.?[0-9]*)|(?:\.[0-9]+))(?:(?:e|E)(?:\+|-)?[0-9]+)?)(?:L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?'
   # OpenDSS variable 
   variable: (@)([^=\s^.]+)(?:(?:(?:(\.)(?:[0-9]+))*)|(?:(\^)[[:alnum:]]+))
@@ -131,14 +131,14 @@ contexts:
     - include: comment
 
     - comment: OpenDSS object.name.property
-      match: (?i)({{objects}})(\.)
+      match: (?i)\b({{objects}})(\.)
       captures:
         0: meta.object.opendss
         1: storage.type.opendss
         2: punctuation.accessor.opendss
       set: object-name
       with_prototype:
-        - match: "(?=[\\s,])"
+        - match: "(?=[\\s,=])"
           pop: true
 
     - comment: Array-quoted \"object.name.property\"
@@ -163,10 +163,10 @@ contexts:
           pop: true
 
     - comment: Object name without object type
-      match: "(?<=\\s|=)(?!={{objects}})"
+      match: "(?<=\\s|=|^)(?!={{objects}})"
       set: object-name
       with_prototype:
-        - match: "(?=[\\s,])"
+        - match: "(?=[\\s,=])"
           pop: true
 
   object-name:
@@ -508,15 +508,22 @@ contexts:
         - meta_scope: string.quoted.double.opendss
 
   set-value:
-    - match: (?i){{identifier}}(?:\.{{identifier}})*\s*(=)
-      captures:
-        0: meta.setvalue.opendss
-        1: keyword.operator.opendss
-      push:
-        - meta_scope: meta.setvalue.opendss
-        - include: comment
-        - include: eol-pop
+    - include: eol-pop
+    - include: comment
+    - match: (?i)(?={{identifier}}(\.{{identifier}})*\s*=)
+      push: [set-value_consume=, object]
+
+  set-value_consume=:
+    - meta_scope: meta.set-value.opendss
+    - include: eol-pop
+    - include: comment
+
+    - match: (?:\s*)(=)(?:\s*)
+      scope: keyword.operator.opendss
+      set:
+        - meta_scope: meta.set-value.opendss
         - include: right-value
+
 
   standalone-commands:
     - match: (?i)^(Cleanup|Disconnect|About|BuildY|CktLosses|Clear|ClearBusMarkers|Currents|Estimate|FinishTimeStep|Help|Init|Losses|MakeBusList|MakePosSeq|Obfuscate|PhaseLosses|Powers|ReprocessBuses|Sample|SeqCurrents|SeqPowers|SeqVoltages|Summary|Totals|UpdateStorage|Varnames|VarValues|Vdiff|Voltages|Ysc|Zsc|Zsc10|ZscRefresh)\b

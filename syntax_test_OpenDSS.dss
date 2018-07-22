@@ -158,20 +158,27 @@ New Transformer.XFM1  Phases=3   Windings=2 Xhl=2.72
 */
 
 Spectrum.DefaultLoad.NumHarm=1   ! This effectively gets rid of LOAD harmonics
-// ^ meta.setvalue.opendss
+// ^ meta.set-value.opendss
 //                          ^ keyword.operator.opendss
 
 Capacitor.C1.kvar = [(14.4 13.8 / sqr 300 *), (14.4 13.8 / sqr 300 *)]
-// ^ meta.setvalue.opendss
+//<- storage.type.opendss
+// ^ meta.set-value.opendss
+//         ^ entity.name.object.opendss
 //                ^ keyword.operator.opendss
 //                      ^ meta.rpn.opendss
 
 line.L1.X1 = (2 pi * 60 * .001 *)
-//             ^ meta.setvalue.opendss
+//<- storage.type.opendss
+//    ^ entity.name.object.opendss
 //         ^ keyword.operator.opendss
+//             ^ meta.set-value.opendss
 //              ^ constant.language.opendss
 
 XYCurve.MyPvsT.Yscale=0.5 X=75
+//                        ^ entity.name.object.opendss
+//                         ^ keyword.operator.opendss
+//                          ^ meta.set-value.opendss
 
 /*
   Objects, object names
@@ -244,14 +251,4 @@ New @abcd.1 a=1
 New object=abc test=[file=abcd.csv, Column=0, Header=Yes]
 New abc test=[dblfile=abcd.dbl]
 New abc test=[sngfile=abcd.sng]
-
-New abc test=[1 2 3]
-
-
-
-New test=[file=abcd.csv, Column=0, Header=Yes]
-New test=[dblfile=abcd.dbl]
-New test=[sngfile=abcd.sng]
-
-New test=[1 2 3]
-
+New abc %test=[1 2 3]

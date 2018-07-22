@@ -7,11 +7,15 @@ scope: source.opendss
 
 variables:
   identifier: (?:[^=\s\(\)\[\]\{\}'"]+)
-  number: '(?:(?:\+|-)?)(?:(?:0(?:x|X)[0-9a-fA-F]*)|(?:(?:[0-9]+\.?[0-9]*)|(?:\.[0-9]+))(?:(?:e|E)(?:\+|-)?[0-9]+)?)(?:L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?(?=\b)'
+  number: '(?:(?:\+|-)?)(?:(?:0(?:x|X)[0-9a-fA-F]*)|(?:(?:[0-9]+\.?[0-9]*)|(?:\.[0-9]+))(?:(?:e|E)(?:\+|-)?[0-9]+)?)(?:L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?'
   # OpenDSS variable 
   variable: (@)([^=\s^.]+)(?:(?:(?:(\.)(?:[0-9]+))*)|(?:(\^)[[:alnum:]]+))
+  # OpenDSS objects
+  objects: (?i)(?:Circuit|LineCode|LineGeometry|LineSpacing|LoadShape|GrowthShape|TCC_Curve|CNData|TSData|WireData|XfmrCode|Vsource|Isource|Fault|Capacitor|Line|Reactor|Transformer|GICTransformer|GICLine|Load|Generator|Indmach012|Storage|CapControl|RegControl|EnergyMeter|Monitor)
   # separator (whitespace, comma, comma + whitespace)
   sep: "(?:\\s*(,)\\s*|\\s+)"
+  # separator, only one char
+  sep1: "[\\s,]"
   # array begin
   array_begin: "[\\[({'\"]"
   # array end
@@ -82,28 +86,85 @@ contexts:
             - include: eol-pop
 
   new:
-    - match: (?i)^New
+    - match: (?i)^New(?=\b)
       scope: punctuation.new.opendss
       set:
         - include: eol-pop
         - include: comment
-        
-        - comment: Quoted name
-          match: ("|')
-          scope: punctuation.definition.string.begin
-          embed: scope:support.class.opendss
-          escape: (\1)
-          escape_captures:
-            1: punctuation.definition.string.end
 
-        - comment: ObjectType.Name
-          match: \b((?:{{identifier}})(?:\.{{identifier}})?)\b
-          scope: support.class.opendss
-          push: edit
+        - comment: Starting with object name (without spaces)
+          match: (?i)(?=(?:object\s*=\s*)?(?:{{array_begin}}\s*)?(?:{{objects}}|{{identifier}}))
+          set: [edit-function, object]
 
-        - comment: after getting the object name
-          match: (?i)(?<!New)(\s|,)
-          set: edit
+  object:
+    # TODO: implement Edit command with object and edit context
+    # TODO: implement set command with edit context
+    - include: eol-pop
+    - include: comment
+
+    - comment: object = xxxx.yyyy.zzz syntax
+      match: (?i)object(?=\b)
+      scope: variable.function.opendss entity.name.param.opendss
+      set:
+        - include: eol-pop
+        - include: comment
+        - match: (?:\s*)(\=)(?:\s*)
+          captures: 
+            1: keyword.operator.opendss
+          set: object
+
+    - comment: OpenDSS object.name.property
+      match: (?i)({{objects}})(\.)
+      captures:
+        0: meta.object.opendss
+        1: storage.type.opendss
+        2: punctuation.accessor.opendss
+      set: object-name
+      with_prototype:
+        - match: "(?=[\\s,])"
+          pop: true
+
+    - comment: Array-quoted \"object.name.property\"
+      match: "{{array_begin}}"
+      scope: punctuation.group.begin.opendss
+      set: 
+        - include: comment
+        - include: eol-pop
+        - meta_scope: quoted_object_name
+        - comment: OpenDSS object.name.property
+          match: (?i)({{objects}})(\.)
+          captures:
+            0: meta.object.opendss
+            1: storage.type.opendss
+            2: punctuation.accessor.opendss
+          push: object-name
+          with_prototype:
+            - match: "(?=[\"'(\\[{])"
+              pop: true
+        - match: "{{array_end}}"
+          scope: punctuation.group.end.opendss
+          pop: true
+
+    - comment: Object name without object type
+      match: "(?<=\\s|=)(?!={{objects}})"
+      set: object-name
+      with_prototype:
+        - match: "(?=[\\s,])"
+          pop: true
+
+  object-name:
+    - meta_scope: entity.name.object.opendss meta.object.opendss
+    - include: eol-pop
+    - include: comment
+    - match: \.|\^
+      scope: punctuation.accessor.opendss
+
+    - match: '{{variable}}'
+      captures:
+        0: variable.opendss
+        1: punctuation.definition.variable.opendss
+        3: punctuation.accessor.opendss
+        4: punctuation.accessor.opendss
 
   var:
     - match: (?i)^(var)\b
@@ -161,9 +222,9 @@ contexts:
   more:
     - match: (?i)^(More|M|~)(?=\s)
       scope: punctuation.more.opendss
-      push: edit
+      push: edit-function
 
-  edit:
+  edit-function:
     - meta_scope: meta.edit.opendss
     - include: comment
     - include: eol-pop
@@ -190,7 +251,7 @@ contexts:
       match: (?<=[\]\)}'"])
       pop: true
 
-    - match: '{{variable}}'
+    - match: '{{variable}}(?={{sep}})'
       captures:
         0: variable.opendss
         1: punctuation.definition.variable.opendss
@@ -198,17 +259,17 @@ contexts:
         4: punctuation.definition.variable.opendss
       pop: true
 
-    - match: '{{number}}'
+    - match: '{{number}}(?={{sep}})'
       scope: constant.numeric.opendss
       pop: true
 
-    - match: "{{identifier}}"
+    - match: "{{identifier}}(?={{sep}})"
       scope: entity.name.object.opendss
       pop: true
 
     - match: $
       scope: invalid.illegal
-      set: edit
+      set: edit-function
 
   array:
     - match: \[
@@ -282,7 +343,7 @@ contexts:
         - meta_scope: string.unquoted.opendss
         - match: ","
           scope: punctuation.separator.opendss
-          embed: edit
+          embed: edit-function
           escape: "(?={{array_end}})"
 
     - comment: binary file of doubles
@@ -296,7 +357,7 @@ contexts:
         - meta_scope: string.unquoted.opendss
         - match: ","
           scope: punctuation.separator.opendss
-          embed: edit
+          embed: edit-function
           escape: "(?={{array_end}})"
 
     - comment: binary file of doubles
@@ -310,7 +371,7 @@ contexts:
         - meta_scope: string.unquoted.opendss
         - match: ","
           scope: punctuation.separator.opendss
-          embed: edit
+          embed: edit-function
           escape: "(?={{array_end}})"
 
   rpn:

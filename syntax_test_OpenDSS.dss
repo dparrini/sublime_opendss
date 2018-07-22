@@ -174,19 +174,80 @@ line.L1.X1 = (2 pi * 60 * .001 *)
 XYCurve.MyPvsT.Yscale=0.5 X=75
 
 /*
+  Objects, object names
+*/
+
+new object=circuit.DSSLLibtestckt abc
+//  ^ variable.function.opendss
+//  ^ entity.name.param.opendss
+//        ^ keyword.operator.opendss
+//          ^ storage.type.opendss
+//          ^ meta.object.opendss
+//                ^ punctuation.accessor.opendss
+//                    ^ entity.name.object.opendss
+
+NEW object = line_test.1 @abc
+//  ^ variable.function.opendss
+//  ^ entity.name.param.opendss
+//         ^ keyword.operator.opendss
+//           ^ meta.object.opendss
+//           ^ entity.name.object.opendss
+
+New Xfmrcode.333KVA phases=1 Windings=3 ppm=0
+//  ^ storage.type.opendss
+//          ^ punctuation.accessor.opendss
+//            ^ entity.name.object.opendss
+
+New Abc.500KVA phase=1 Winding=3 ppm=0
+//   ^ entity.name.object.opendss
+///    ^ punctuation.accessor.opendss
+
+New Transformer.@Bridge^A Xfmrcode=Auto Buses=[@Input.8.23 @Input.23.9]
+//  ^ storage.type.opendss
+//              ^punctuation.definition.variable.opendss
+//               ^ variable.opendss
+//                     ^ punctuation.accessor.opendss
+
+New linecode.1 nphases=3 BaseFreq=60
+//  ^ storage.type.opendss
+//          ^ punctuation.accessor.opendss
+//           ^ entity.name.object.opendss
+
+New "Line.First Line", b1240 32 336acsr
+//    ^ storage.type.opendss
+//       ^ punctuation.accessor.opendss
+//           ^ entity.name.object.opendss
+
+New "LoadShape.PVLoadShape2" npts=86400 sinterval=1 mult=(File=LoadshapePV2.csv)
+//    ^ storage.type.opendss
+//            ^ punctuation.accessor.opendss
+//              ^ entity.name.object.opendss
+
+new line.@abcd.1 a=1
+//    ^ storage.type.opendss
+//      ^ punctuation.accessor.opendss
+//       ^punctuation.definition.variable.opendss
+//        ^ variable.opendss
+//          ^ entity.name.object.opendss
+//            ^ punctuation.accessor.opendss
+
+New @abcd.1 a=1
+//  ^punctuation.definition.variable.opendss
+//    ^ variable.opendss
+//      ^ entity.name.object.opendss
+//       ^ punctuation.accessor.opendss
+
+/*
    Special array cases
 */
 
-New abc test=[file=abcd.csv, Column=0, Header=Yes]
+New object=abc test=[file=abcd.csv, Column=0, Header=Yes]
 New abc test=[dblfile=abcd.dbl]
 New abc test=[sngfile=abcd.sng]
 
 New abc test=[1 2 3]
 
 
-New test=(1,2,3 | 4, 5, 6 | 7, 8, 9)
-//       ^ punctuation.group.parens.begin
-//                                 ^ punctuation.group.parens.end
 
 New test=[file=abcd.csv, Column=0, Header=Yes]
 New test=[dblfile=abcd.dbl]

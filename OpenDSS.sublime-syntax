@@ -43,6 +43,7 @@ contexts:
     - include: comment
     - include: string
     - include: new
+    - include: edit
     - include: var
     - include: query
     - include: more
@@ -55,6 +56,11 @@ contexts:
     # end-of-line context pop
     - match: $
       pop: true
+
+  test:
+    - comment: test context
+      match: .*$
+      scope: invalid.illegal.test
 
   comment:
     - comment: line comment
@@ -88,17 +94,22 @@ contexts:
   new:
     - match: (?i)^New(?=\b)
       scope: punctuation.new.opendss
-      set:
-        - include: eol-pop
-        - include: comment
+      set: expect-object
 
-        - comment: Starting with object name (without spaces)
-          match: (?i)(?=(?:object\s*=\s*)?(?:{{array_begin}}\s*)?(?:{{objects}}|{{identifier}}))
-          set: [edit-function, object]
+  edit:
+    - match: (?i)^Edit(?=\b)
+      scope: keyword.control.edit.opendss
+      set: expect-object
 
-  object:
-    # TODO: implement Edit command with object and edit context
-    # TODO: implement set command with edit context
+  expect-object:
+    - include: eol-pop
+    - include: comment
+
+    - comment: Starting with object name (without spaces)
+      match: (?i)(?=(?:object\s*=\s*)?(?:{{array_begin}}\s*)?(?:{{objects}}|{{identifier}}))
+      set: [edit-function, edit-object]
+
+  edit-object:
     - include: eol-pop
     - include: comment
 
@@ -112,6 +123,12 @@ contexts:
           captures: 
             1: keyword.operator.opendss
           set: object
+
+    - include: object
+
+  object:
+    - include: eol-pop
+    - include: comment
 
     - comment: OpenDSS object.name.property
       match: (?i)({{objects}})(\.)
@@ -513,7 +530,7 @@ contexts:
           pop: true
 
   commands:
-    - match: (?i)^(Connect|AddBusMarker|AlignFile|AllocateLoads|BatchEdit|BusCoords|CalcVoltageBases|CalcV|Capacity|CD|Close|CloseDI|Comparecases|DI_plot|Disable|Distribute|DOScmd|Dump|Edit|Enable|Export|Fileedit|Formedit|Get|Guids|Interpolate|LatLongCoords|NodeList|NodeDiff|Open|Plot|PstCalc|Reconductor|Reduce|RelCalc|Remove|Rephase|Reset|Rotate|Save|Select|Set|SetkVBase|Show|Solve|Variable|Visualize|YearlyCurves)\b
+    - match: (?i)^(Connect|AddBusMarker|AlignFile|AllocateLoads|BatchEdit|BusCoords|CalcVoltageBases|CalcV|Capacity|CD|Close|CloseDI|Comparecases|DI_plot|Disable|Distribute|DOScmd|Dump|Enable|Export|Fileedit|Formedit|Get|Guids|Interpolate|LatLongCoords|NodeList|NodeDiff|Open|Plot|PstCalc|Reconductor|Reduce|RelCalc|Remove|Rephase|Reset|Rotate|Save|Select|Set|SetkVBase|Show|Solve|Variable|Visualize|YearlyCurves)\b
       scope: keyword.command.opendss
 
     - match: (?i)^(?:Redirect|Compile)\b

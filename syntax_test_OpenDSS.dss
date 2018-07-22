@@ -218,18 +218,18 @@ New "Line.First Line", b1240 32 336acsr
 //       ^ punctuation.accessor.opendss
 //           ^ entity.name.object.opendss
 
-New "LoadShape.PVLoadShape2" npts=86400 sinterval=1 mult=(File=LoadshapePV2.csv)
+Edit "LoadShape.PVLoadShape2" npts=86400 sinterval=1 mult=(File=LoadshapePV2.csv)
 //    ^ storage.type.opendss
-//            ^ punctuation.accessor.opendss
+//             ^ punctuation.accessor.opendss
 //              ^ entity.name.object.opendss
 
-new line.@abcd.1 a=1
+Edit line.@abcd.1 a=1
 //    ^ storage.type.opendss
-//      ^ punctuation.accessor.opendss
-//       ^punctuation.definition.variable.opendss
-//        ^ variable.opendss
-//          ^ entity.name.object.opendss
-//            ^ punctuation.accessor.opendss
+//       ^ punctuation.accessor.opendss
+//        ^punctuation.definition.variable.opendss
+//         ^ variable.opendss
+//           ^ entity.name.object.opendss
+//             ^ punctuation.accessor.opendss
 
 New @abcd.1 a=1
 //  ^punctuation.definition.variable.opendss

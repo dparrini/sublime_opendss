@@ -268,7 +268,7 @@ contexts:
       match: (?<=[\]\)}'"])
       pop: true
 
-    - match: '{{variable}}(?={{sep}})'
+    - match: "{{variable}}(?={{sep}}|$)"
       captures:
         0: variable.opendss
         1: punctuation.definition.variable.opendss
@@ -276,11 +276,11 @@ contexts:
         4: punctuation.definition.variable.opendss
       pop: true
 
-    - match: '{{number}}(?={{sep}})'
+    - match: '(?<=\s|=){{number}}(?={{sep}}|$)'
       scope: constant.numeric.opendss
       pop: true
 
-    - match: "{{identifier}}(?={{sep}})"
+    - match: "{{identifier}}(?={{sep}}|$)"
       scope: entity.name.object.opendss
       pop: true
 
@@ -341,13 +341,20 @@ contexts:
     - match: (?:,)
       scope: punctuation.separator.opendss
 
-    - match: "{{number}}"
+    - match: "\\b(?:{{number}})\\b"
       scope: constant.numeric.opendss
 
-    - match: "(@)?({{identifier}})(?:\\.{{identifier}})*(?:(?={{sep}})|(?={{array_end}}))"
+    - match: "{{variable}}(?={{sep}}|$)"
       captures:
-        0: entity.name.variable.opendss
+        0: variable.opendss
         1: punctuation.definition.variable.opendss
+        3: punctuation.definition.variable.opendss
+        4: punctuation.definition.variable.opendss
+
+    - match: "({{identifier}})(?:(\\.){{identifier}})*(?:(?={{sep}})|(?={{array_end}}))"
+      captures:
+        1: entity.name.object.opendss
+        2: punctuation.accessor.opendss
 
     - comment: single-column CSV file
       match: (?i)\b(file)\b(\=)\b
@@ -392,14 +399,6 @@ contexts:
           escape: "(?={{array_end}})"
 
   rpn:
-    - match: "\\[{{expect_rpn}}"
-      scope: punctuation.definition.rpn.begin.opendss
-      embed: rpn-internal
-      escape: \]
-      embed_scope: meta.double meta.rpn.opendss
-      escape_captures: 
-        0: punctuation.group.double.end.opendss
-
     - match: "\\[{{expect_rpn}}"
       scope: punctuation.group.brackets.begin.opendss
       embed: rpn-internal

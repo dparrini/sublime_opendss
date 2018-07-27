@@ -148,7 +148,7 @@ New Transformer.t kvs=("24.9 3 sqrt /" "10 2 *") test=(14.4 13.8 / sqr 300 *)
 //                                  ^ keyword.operator.opendss
 //                                                          ^ meta.rpn.opendss
 
-New Transformer.@TR^A Xfmrcode=333KVA Buses=[@Input.1.4 @Output.1.0 @Input.7.0 ]
+New Transformer.@TR^A Xfmrcode=333KVA Buses=[@Input.1.4 @Output.1.0 @Input.7.0]
 
 
 New Transformer.XFM1  Phases=3   Windings=2 Xhl=2.72

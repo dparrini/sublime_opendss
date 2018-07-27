@@ -510,7 +510,7 @@ contexts:
   set-value:
     - include: eol-pop
     - include: comment
-    - match: (?i)(?={{identifier}}(\.{{identifier}})*\s*=)
+    - match: (?i)(?={{identifier}}(\.{{identifier}})*)
       push: [set-value_consume=, object]
 
   set-value_consume=:

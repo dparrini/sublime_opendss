@@ -66,6 +66,8 @@ Redirect IEEELinecodes.DSS
 //         ^ entity.name.file.opendss
 //      ^ meta.filecommand.opendss
 
+Compile "C:\Users\prdu001\DSSData\CDR\Master3.DSS"
+
 About abcd ! test
 // ^ keyword.command.opendss
 //     ^ invalid.illegal.opendss
@@ -156,6 +158,11 @@ New Transformer.XFM1  Phases=3   Windings=2 Xhl=2.72
 /*
    Setting properties
 */
+
+Line.TransmissionLine1.R1
+//<- storage.type.opendss
+// ^ meta.set-value.opendss
+//  ^ punctuation.accessor.opendss
 
 Spectrum.DefaultLoad.NumHarm=1   ! This effectively gets rid of LOAD harmonics
 // ^ meta.set-value.opendss

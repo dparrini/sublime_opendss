@@ -1,6 +1,6 @@
 # Sublime OpenDSS
 
-OpenDSS script file syntax defitions for Sublime Text 3.
+OpenDSS script file syntax definitions for Sublime Text 3.
 
 ## Features
 

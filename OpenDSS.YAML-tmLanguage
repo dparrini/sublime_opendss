@@ -1,0 +1,24 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+---
+name: OpenDSS
+fileTypes: [dss]
+scopeName: source.opendss
+
+
+patterns:
+  # OpenDSS commands
+  - match: "^(Connect|_DoControlActions|_InitSnap|_SampleControls|_ShowControlQueue|_SolveDirect|_SolveNoControl|_SolvePFlow|AddBusMarker|AlignFile|AllocateLoads|BatchEdit|BusCoords|CalcVoltageBases|Capacity|CD|Close|CloseDI|Comparecases|Compile|DI_plot|Disable|Distribute|DOScmd|Dump|Edit|Enable|Export|Fileedit|Formedit|Get|Guids|Interpolate|LatLongCoords|NodeList|NodeDiff|Open|Plot|PstCalc|Reconductor|Redirect|Reduce|RelCalc|Remove|Rephase|Reset|Rotate|Save|Select|Set|SetkVBase|Show|Solve|Variable|Visualize|YearlyCurves)"
+    name: keyword.control.opendss
+
+  # OpenDSS standalone commands (no arguments)
+  - match: "^(Cleanup|Disconnect|About|BuildY|CktLosses|Clear|ClearBusMarkers|Currents|Estimate|FinishTimeStep|Help|Init|Losses|MakeBusList|MakePosSeq|Obfuscate|PhaseLosses|Powers|ReprocessBuses|Sample|SeqCurrents|SeqPowers|SeqVoltages|Summary|Totals|UpdateStorage|Varnames|VarValues|Vdiff|Voltages|Ysc|Zsc|Zsc10|ZscRefresh)"
+    name: keyword.control.opendss
+
+  # OpenDSS objects/classes
+  - match: "^(LineCode|LineGeometry|LineSpacing|LoadShape|GrowthShape|TCC_Curve|CNData|TSData|WireData|XfmrCode|Vsource|Isource|Fault|Capacitor|Line|Reactor|Transformer|GICTransformer|GICLine|Load|Generator|Indmach012|Storage|CapControl|RegControl|EnergyMeter|Monitor)"
+    name: storage.type.opendss
+
+  # OpenDSS line comment
+  # TODO: block comment /* */
+  - match: "^(//|!)\\s(.*)$"
+    name: comment.line.opendss

@@ -1,0 +1,8 @@
+*.txt
+*.bat
+*.sublime-project
+*.sublime-workspace
+ref/
+odss/
+examples/
+contribution/

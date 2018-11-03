@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>fileTypes</key>
+	<array>
+		<string>dss</string>
+	</array>
+	<key>name</key>
+	<string>OpenDSS</string>
+	<key>patterns</key>
+	<array>
+		<dict>
+			<key>match</key>
+			<string>^(Connect|_DoControlActions|_InitSnap|_SampleControls|_ShowControlQueue|_SolveDirect|_SolveNoControl|_SolvePFlow|AddBusMarker|AlignFile|AllocateLoads|BatchEdit|BusCoords|CalcVoltageBases|Capacity|CD|Close|CloseDI|Comparecases|Compile|DI_plot|Disable|Distribute|DOScmd|Dump|Edit|Enable|Export|Fileedit|Formedit|Get|Guids|Interpolate|LatLongCoords|NodeList|NodeDiff|Open|Plot|PstCalc|Reconductor|Redirect|Reduce|RelCalc|Remove|Rephase|Reset|Rotate|Save|Select|Set|SetkVBase|Show|Solve|Variable|Visualize|YearlyCurves)</string>
+			<key>name</key>
+			<string>keyword.control.opendss</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>^(Cleanup|Disconnect|About|BuildY|CktLosses|Clear|ClearBusMarkers|Currents|Estimate|FinishTimeStep|Help|Init|Losses|MakeBusList|MakePosSeq|Obfuscate|PhaseLosses|Powers|ReprocessBuses|Sample|SeqCurrents|SeqPowers|SeqVoltages|Summary|Totals|UpdateStorage|Varnames|VarValues|Vdiff|Voltages|Ysc|Zsc|Zsc10|ZscRefresh)</string>
+			<key>name</key>
+			<string>keyword.control.opendss</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>^(LineCode|LineGeometry|LineSpacing|LoadShape|GrowthShape|TCC_Curve|CNData|TSData|WireData|XfmrCode|Vsource|Isource|Fault|Capacitor|Line|Reactor|Transformer|GICTransformer|GICLine|Load|Generator|Indmach012|Storage|CapControl|RegControl|EnergyMeter|Monitor)</string>
+			<key>name</key>
+			<string>storage.type.opendss</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>^(//|!)\s(.*)$</string>
+			<key>name</key>
+			<string>comment.line.opendss</string>
+		</dict>
+	</array>
+	<key>scopeName</key>
+	<string>source.opendss</string>
+</dict>
+</plist>

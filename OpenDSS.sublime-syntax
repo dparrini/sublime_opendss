@@ -8,7 +8,7 @@ scope: source.opendss
 variables:
   identifier: (?:[^+-=\.,\^\s\(\)\[\]\{\}'"][^=\.,\^\s\(\)\[\]\{\}'"]*)
   number: '(?:\+|-)?(?:(?:0(?:x|X)[0-9a-fA-F]*)|(?:(?:[0-9]+\.?[0-9]*)|(?:\.[0-9]+))(?:(?:e|E)(?:\+|-)?[0-9]+)?)(?:L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?'
-  # OpenDSS variable 
+  # OpenDSS variable
   variable: (@)([^=\s^.]+)(?:(?:(?:(\.)(?:[0-9]+))*)|(?:(\^)[[:alnum:]]+))
   # OpenDSS objects
   objects: (?i)(?:Circuit|LineCode|LineGeometry|LineSpacing|LoadShape|GrowthShape|TCC_Curve|CNData|TSData|WireData|XfmrCode|Vsource|Isource|Fault|Capacitor|Line|Reactor|Transformer|GICTransformer|GICLine|Load|Generator|Indmach012|Storage|CapControl|RegControl|EnergyMeter|Monitor)
@@ -65,7 +65,7 @@ contexts:
   comment:
     - comment: line comment
       match: ^(//)
-      captures: 
+      captures:
         1: punctuation.definition.comment.opendss
       push:
         - meta_scope: comment.line.opendss
@@ -93,7 +93,7 @@ contexts:
 
   new:
     - match: (?i)^New(?=\b)
-      scope: punctuation.new.opendss
+      scope: keyword.new.opendss
       set: expect-object
 
   edit:
@@ -115,12 +115,12 @@ contexts:
 
     - comment: object = xxxx.yyyy.zzz syntax
       match: (?i)object(?=\b)
-      scope: variable.function.opendss entity.name.param.opendss
+      scope: entity.name.param.opendss variable.function.opendss
       set:
         - include: eol-pop
         - include: comment
         - match: (?:\s*)(\=)(?:\s*)
-          captures: 
+          captures:
             1: keyword.operator.opendss
           set: object
 
@@ -144,7 +144,7 @@ contexts:
     - comment: Array-quoted \"object.name.property\"
       match: "{{array_begin}}"
       scope: punctuation.group.begin.opendss
-      set: 
+      set:
         - include: comment
         - include: eol-pop
         - meta_scope: quoted_object_name
@@ -195,13 +195,13 @@ contexts:
 
         - comment: variable value output mode
           match: \@(?={{identifier}}(?!.*=))
-          scope: punctuation.definition.variable.opendss entity.name.variable.opendss
+          scope: entity.name.variable.opendss punctuation.definition.variable.opendss
           set:
             - meta_scope: meta.var.opendss
             - include: comment
             - include: eol-pop
             - match: "{{identifier}}"
-              scope: meta.var.opendss entity.name.variable.opendss
+              scope: entity.name.variable.opendss meta.var.opendss
               set:
                 - include: comment
                 - include: eol-pop
@@ -215,7 +215,7 @@ contexts:
             - include: comment
             - include: eol-pop
             - match: \@
-              scope: punctuation.definition.variable.opendss entity.name.variable.opendss
+              scope: entity.name.variable.opendss punctuation.definition.variable.opendss
               set:
                 - meta_scope: meta.var.opendss
                 - match: "{{identifier}}"
@@ -238,7 +238,7 @@ contexts:
 
   more:
     - match: (?i)^(More|M|~)(?=\s)
-      scope: punctuation.more.opendss
+      scope: keyword.more.opendss
       push: edit-function
 
   edit-function:
@@ -249,7 +249,7 @@ contexts:
     - comment: keyworded parameters
       match: '({{identifier}})\s*(\=)'
       captures:
-        1: variable.function.opendss entity.name.param.opendss
+        1: entity.name.param.opendss variable.function.opendss
         2: keyword.operator.opendss
       push: right-value
 
@@ -294,7 +294,7 @@ contexts:
       embed: array-internal
       escape: \]
       embed_scope: meta.brackets
-      escape_captures: 
+      escape_captures:
         0: punctuation.group.brackets.end.opendss
 
     - match: \(
@@ -302,7 +302,7 @@ contexts:
       embed: array-internal
       escape: \)
       embed_scope: meta.parens
-      escape_captures: 
+      escape_captures:
         0: punctuation.group.parens.end.opendss
 
     - match: \{
@@ -310,7 +310,7 @@ contexts:
       embed: array-internal
       escape: \}
       embed_scope: meta.braces
-      escape_captures: 
+      escape_captures:
         0: punctuation.group.braces.end.opendss
 
     - match: \'
@@ -318,7 +318,7 @@ contexts:
       embed: array-internal
       escape: \'
       embed_scope: meta.single
-      escape_captures: 
+      escape_captures:
         0: punctuation.group.single.end.opendss
 
     - match: \"
@@ -326,7 +326,7 @@ contexts:
       embed: array-internal
       escape: \"
       embed_scope: meta.double
-      escape_captures: 
+      escape_captures:
         0: punctuation.group.double.end.opendss
 
   array-internal:
@@ -334,7 +334,7 @@ contexts:
     - include: rpn
     - include: array
     - include: reserved-variables
-    
+
     - match: (?:\|)
       scope: punctuation.separator.opendss
 
@@ -404,7 +404,7 @@ contexts:
       embed: rpn-internal
       escape: \]
       embed_scope: meta.brackets meta.rpn.opendss
-      escape_captures: 
+      escape_captures:
         0: punctuation.group.brackets.end.opendss
 
     - match: "\\({{expect_rpn}}"
@@ -412,7 +412,7 @@ contexts:
       embed: rpn-internal
       escape: \)
       embed_scope: meta.parens meta.rpn.opendss
-      escape_captures: 
+      escape_captures:
         0: punctuation.group.parens.end.opendss
 
     - match: "{{{expect_rpn}}"
@@ -420,7 +420,7 @@ contexts:
       embed: rpn-internal
       escape: \}
       embed_scope: meta.braces meta.rpn.opendss
-      escape_captures: 
+      escape_captures:
         0: punctuation.group.braces.end.opendss
 
     - match: "'{{expect_rpn}}"
@@ -428,7 +428,7 @@ contexts:
       embed: rpn-internal
       escape: \'
       embed_scope: meta.single meta.rpn.opendss
-      escape_captures: 
+      escape_captures:
         0: punctuation.group.single.end.opendss
 
     - match: "\"{{expect_rpn}}"
@@ -436,7 +436,7 @@ contexts:
       embed: rpn-internal
       escape: \"
       embed_scope: meta.double meta.rpn.opendss
-      escape_captures: 
+      escape_captures:
         0: punctuation.group.double.end.opendss
 
   rpn-internal:
@@ -460,7 +460,7 @@ contexts:
   string:
     - match: \[
       scope: punctuation.definition.string.begin.opendss
-      set: 
+      set:
         - meta_scope: string.quoted.brackets.opendss
       with_prototype:
         - match: \]
@@ -469,7 +469,7 @@ contexts:
 
     - match: \(
       scope: punctuation.definition.string.begin.opendss
-      set: 
+      set:
         - meta_scope: string.quoted.parens.opendss
       with_prototype:
         - match: \)
@@ -478,7 +478,7 @@ contexts:
 
     - match: \{
       scope: punctuation.definition.string.begin.opendss
-      set: 
+      set:
         - meta_scope: string.quoted.braces.opendss
       with_prototype:
         - match: \}
@@ -546,7 +546,7 @@ contexts:
         - include: eol-pop
         - include: comment
         - match: .*(?=$)
-          scope: string.unquoted.opendss entity.name.file.opendss
+          scope: entity.name.file.opendss string.unquoted.opendss
 
   solution-commands:
     - match: (?i)^(_)(DoControlActions|InitSnap|SampleControls|ShowControlQueue|SolveDirect|SolveNoControl|SolvePFlow)\b

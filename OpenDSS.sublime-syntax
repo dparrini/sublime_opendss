@@ -525,7 +525,7 @@ contexts:
 
 
   standalone-commands:
-    - match: (?i)^(Cleanup|Disconnect|About|BuildY|CktLosses|Clear|ClearBusMarkers|Currents|Estimate|FinishTimeStep|Help|Init|Losses|MakeBusList|MakePosSeq|Obfuscate|PhaseLosses|Powers|ReprocessBuses|Sample|SeqCurrents|SeqPowers|SeqVoltages|Summary|Totals|UpdateStorage|Varnames|VarValues|Vdiff|Voltages|Ysc|Zsc|Zsc10|ZscRefresh)\b
+    - match: (?i)^(Cleanup|Disconnect|Abort|About|BuildY|CalcIncMatrix|CalcIncMatrix_O|CalcLaplacian|CktLosses|Clear|ClearAll|ClearBusMarkers|Currents|Estimate|FinishTimeStep|Help|Init|Losses|MakeBusList|MakePosSeq|NewActor|Obfuscate|Parallel|PhaseLosses|Powers|ReprocessBuses|Sample|SeqCurrents|SeqPowers|SeqVoltages|SolveAll|Summary|Tear_Circuit|Totals|UpdateStorage|Varnames|VarValues|Vdiff|Voltages|Wait|Ysc|Zsc|Zsc10|ZscRefresh)\b
       scope: keyword.command.opendss
       push:
         - meta_scope: meta.command.opendss

@@ -60,6 +60,9 @@ _DoControlActions
 //<- punctuation.keyword.opendss
 // ^ keyword.command.opendss
 
+Wait
+//^^ meta.command.opendss keyword.command.opendss
+
 Redirect IEEELinecodes.DSS
 // ^ keyword.command.opendss
 //         ^ string.unquoted.opendss

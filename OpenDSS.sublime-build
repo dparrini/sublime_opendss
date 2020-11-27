@@ -1,5 +1,16 @@
 {
   "selector": "source.opendss",
-  "cmd": ["opendsscmd", "\"$file\""],
-  "working_dir": "$file_path"
+  "variants":
+  [
+    {
+      "name": "Command line",
+      "cmd": ["opendsscmd", "\"$file\""],
+      "working_dir": "$file_path"
+    },
+    {
+      "name": "Run command line",
+      "cmd": ["build_command_line", "$file"],
+      "working_dir": "$file_path"
+    }
+  ]
 }
